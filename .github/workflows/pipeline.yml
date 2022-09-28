@@ -37,6 +37,9 @@ jobs:
       #       #     wait-on: http://localhost:5000
 
       - name: deploy to heroku
+        runs-on: ubuntu-20.04
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         if: ${{ github.event_name == 'push' }}
         with:
