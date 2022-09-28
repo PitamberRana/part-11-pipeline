@@ -39,10 +39,10 @@ jobs:
       - name: heroku deploy
         if: ${{ github.event_name == 'push' }}
         needs: build
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-20.04
         steps:
-          - uses: actions/checkout@v2
-          - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
+          - uses: actions/checkout@v3
+          - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
             with:
               heroku_api_key: ${{secrets.HEROKU_API_KEY}}
               heroku_app_name: "pipelinetest99" #Must be unique in Heroku
