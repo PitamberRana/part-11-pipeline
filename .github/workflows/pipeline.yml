@@ -36,15 +36,7 @@ jobs:
       #       #     start: npm run start-prod
       #       #     wait-on: http://localhost:5000
 
-name: Deploy
-
-on:
-  push:
-    branches:
-      - master # Changing the branch here would also work
-
-jobs:
-  deploy:
+  heroku deploy:
     if: ${{ github.event_name == 'push' }}
     needs: build
     runs-on: ubuntu-latest
@@ -59,9 +51,10 @@ jobs:
           heroku container:login
 
       # healthcheck: "https://pipelinetest99.herokuapp.com/health"
-          # checkstring: "ok"
-          # delay: 5
-          # rollbackonhealthcheckfailed: true
+      # checkstring: "ok"
+      # delay: 5
+      # rollbackonhealthcheckfailed: true
+
 #   tag_release:
 #     needs: [simple_deployment_pipeline]
 #     runs-on: ubuntu-20.04
