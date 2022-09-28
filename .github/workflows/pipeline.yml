@@ -38,11 +38,16 @@ jobs:
       - name: deploy to heroku
         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
         if: ${{ github.event_name == 'push' }}
+        needs: build
+        runs-on: ubuntu-latest
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "pipelinetest99" #Must be unique in Heroku
           heroku_email: "pitamber11rana@gmail.com"
-          # healthcheck: "https://pipelinetest99.herokuapp.com/health"
+        - run: |
+          heroku container:login
+
+      # healthcheck: "https://pipelinetest99.herokuapp.com/health"
           # checkstring: "ok"
           # delay: 5
           # rollbackonhealthcheckfailed: true
