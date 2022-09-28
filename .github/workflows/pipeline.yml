@@ -35,11 +35,22 @@ jobs:
       #       #     build: npm run build
       #       #     start: npm run start-prod
       #       #     wait-on: http://localhost:5000
-      - name: deploy to heroku
-        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
-        if: ${{ github.event_name == 'push' }}
-        needs: build
-        runs-on: ubuntu-latest
+
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master # Changing the branch here would also work
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'push' }}
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "pipelinetest99" #Must be unique in Heroku
