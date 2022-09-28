@@ -4,8 +4,8 @@
   "description": "A boilerplate",
   "main": "index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "start": "cross-env NODE_ENV=production node index.js --openssl-legacy-provider start",
+    "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider next index.js",
+    "start": "cross-env NODE_ENV=production node index.js",
     "build": "webpack --mode=production",
     "lint": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
