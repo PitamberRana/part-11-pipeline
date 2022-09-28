@@ -1,0 +1,83 @@
+# name: own pipeline
+
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     branches: [master]
+#     types: [opened, synchronize]
+
+# jobs:
+#   simple_deployment_pipeline:
+#     runs-on: ubuntu-20.04
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: actions/setup-node@v2
+#         with:
+#           node-version: "16"
+
+#       - name: npm install
+#         run: npm install
+
+#       - name: lint
+#         run: npm run eslint
+
+#       - name: build
+#         run: npm run build
+#       #       # - name: test
+#       #       #   run: npm run test
+
+#       #       # - name: e2e tests
+#       #       #   uses: cypress-io/github-action@v4
+#       #       #   with:
+#       #       #     build: npm run build
+#       #       #     start: npm run start-prod
+#       #       #     wait-on: http://localhost:5000
+
+#       - name: deploy to heroku
+#         uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+#         if: ${{ github.event_name == 'push' }}
+#         with:
+#           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+#           heroku_app_name: "pipelinetest00" #Must be unique in Heroku
+#           heroku_email: "pitamber11rana@gmail.com"
+#           healthcheck: "https://pipelinetest00.herokuapp.com/health"
+#           checkstring: "ok"
+#           delay: 5
+#           rollbackonhealthcheckfailed: true
+#   tag_release:
+#     needs: [simple_deployment_pipeline]
+#     runs-on: ubuntu-20.04
+#     if: ${{ github.event_name == 'push' }}
+#     steps:
+#       - uses: actions/checkout@v3
+#         with:
+#           fetch-depth: "0"
+#       - name: Bump version and push tag
+#         uses: anothrNick/github-tag-action@1.36.0
+#         if: ${{ !contains(env.COMMIT_MESSAGES, 'skip')}}
+#         env:
+#           COMMIT_MESSAGES: ${{ join(github.event.commits.*.message) }}
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           WITH_V: true
+#           # DRY_RUN: true  **doesnt add tag but prints in action console
+#           DEFAULT_BUMP: "patch"
+#       - name: Test Success
+#         uses: rjstone/discord-webhook-notify@v1.0.4
+#         if: success()
+#         with:
+#           # severity: info
+#           # details: Test Succeeded!
+#           # webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+#           severity: info
+#           text: New version of pokedex deployed
+#           description: to https://pokedex30309.herokuapp.com/ by unknown
+#           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+#       - name: Test Failure
+#         uses: rjstone/discord-webhook-notify@v1.0.4
+#         if: failure()
+#         with:
+#           severity: error
+#           details: Test Failed!
+#           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
