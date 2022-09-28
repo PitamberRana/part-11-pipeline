@@ -55,8 +55,8 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "pipelinetest99" #Must be unique in Heroku
           heroku_email: "pitamber11rana@gmail.com"
-        - run: |
-          heroku container:login
+     - run: |
+        heroku container:login
 
       # healthcheck: "https://pipelinetest99.herokuapp.com/health"
           # checkstring: "ok"
