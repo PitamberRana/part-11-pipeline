@@ -42,11 +42,10 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "pipelinetest99" #Must be unique in Heroku
           heroku_email: "pitamber11rana@gmail.com"
-          branch: master
-          healthcheck: "https://pipelinetest99.herokuapp.com/health"
-          checkstring: "ok"
-          delay: 5
-          rollbackonhealthcheckfailed: true
+          # healthcheck: "https://pipelinetest99.herokuapp.com/health"
+          # checkstring: "ok"
+          # delay: 5
+          # rollbackonhealthcheckfailed: true
 #   tag_release:
 #     needs: [simple_deployment_pipeline]
 #     runs-on: ubuntu-20.04
