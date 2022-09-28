@@ -8,6 +8,7 @@ const MessageList = ({ messages, deleteMessage }) => {
   }
 
   return (
+    // eslint-disable-next-line react/jsx-filename-extension
     <ul>
       {messages.map((message) => (
         <li key={message.id}>
@@ -20,6 +21,5 @@ const MessageList = ({ messages, deleteMessage }) => {
     </ul>
   )
 }
-
 
 export default MessageList
