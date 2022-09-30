@@ -4,7 +4,11 @@
   "description": "A boilerplate",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider next index.js",
+=======
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+>>>>>>> 5434927 (new check)
     "start": "cross-env NODE_ENV=production node index.js",
     "build": "webpack --mode=production",
     "lint": "eslint . --fix",
