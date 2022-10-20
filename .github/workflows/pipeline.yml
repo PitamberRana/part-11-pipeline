@@ -44,9 +44,6 @@ jobs:
           heroku_app_name: "pokedex30309" #Must be unique in Heroku
           heroku_email: "pitamber11rana@gmail.com"
           healthcheck: "https://pokedex30309.herokuapp.com/health"
-          checkstring: "ok"
-          delay: 5
-          rollbackonhealthcheckfailed: true
 #   tag_release:
 #     needs: [simple_deployment_pipeline]
 #     runs-on: ubuntu-20.04
