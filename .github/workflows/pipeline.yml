@@ -46,38 +46,51 @@ jobs:
           healthcheck: "https://pokedex30309.herokuapp.com/health"
           checkstring: "ok"
           rollbackonhealthcheckfailed: true
-#   tag_release:
-#     needs: [simple_deployment_pipeline]
-#     runs-on: ubuntu-20.04
-#     if: ${{ github.event_name == 'push' }}
-#     steps:
-#       - uses: actions/checkout@v3
-#         with:
-#           fetch-depth: "0"
-#       - name: Bump version and push tag
-#         uses: anothrNick/github-tag-action@1.36.0
-#         if: ${{ !contains(env.COMMIT_MESSAGES, 'skip')}}
-#         env:
-#           COMMIT_MESSAGES: ${{ join(github.event.commits.*.message) }}
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#           WITH_V: true
-#           # DRY_RUN: true  **doesnt add tag but prints in action console
-#           DEFAULT_BUMP: "patch"
-#       - name: Test Success
-#         uses: rjstone/discord-webhook-notify@v1.0.4
-#         if: success()
-#         with:
-#           # severity: info
-#           # details: Test Succeeded!
-#           # webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-#           severity: info
-#           text: New version of pokedex deployed
-#           description: to https://pokedex30309.herokuapp.com/ by unknown
-#           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
-#       - name: Test Failure
-#         uses: rjstone/discord-webhook-notify@v1.0.4
-#         if: failure()
-#         with:
-#           severity: error
-#           details: Test Failed!
-#           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+  tag-releases:
+    permissions: write-all
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-latest
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      WITH_V: true
+      INITIAL_VERSION: 0.0.0
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: "0"
+      # bump tags and releases
+      - name: Bump version and push tag major release
+        if: ${{contains(env.JOIN_COMMIT_MESSAGES,'#major') && !contains(env.JOIN_COMMIT_MESSAGES,'#skip')}}
+
+        uses: anothrNick/github-tag-action@1.40.0
+        id: major
+        env:
+          DEFAULT_BUMP: major
+          JOIN_COMMIT_MESSAGES: ${{ join(github.event.commits.*.message)}}
+
+      - name: Bump version and push tag minor release
+        if: ${{contains(env.JOIN_COMMIT_MESSAGES,'#minor') && !contains(env.JOIN_COMMIT_MESSAGES,'#skip')}}
+        uses: anothrNick/github-tag-action@1.40.0
+        id: minor
+        env:
+          DEFAULT_BUMP: minor
+          JOIN_COMMIT_MESSAGES: ${{ join(github.event.commits.*.message)}}
+
+      - name: Bump version and push tag patch release
+        if: ${{ steps.major.conclusion != 'success' && steps.minor.conclusion != 'success' && !contains(env.JOIN_COMMIT_MESSAGES,'#skip')}}
+        uses: anothrNick/github-tag-action@1.40.0
+        env:
+          DEFAULT_BUMP: patch
+          JOIN_COMMIT_MESSAGES: ${{ join(github.event.commits.*.message)}}
+
+      # - name: Test Success
+      #   uses: rjstone/discord-webhook-notify@v1.0.4
+      #   if: success()
+      #   with:
+      #     severity: info
+      #     text: New version of pokedex deployed
+      #     description: to https://pokedex30309.herokuapp.com/ by unknown
+      #     webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
