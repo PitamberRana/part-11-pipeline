@@ -1,13 +1,17 @@
-const express = require('express')
-const routes = require('@util/routes')
-const errorMiddleware = require('@middleware/errorMiddleware')
+const express = require("express");
+const routes = require("@util/routes");
+const errorMiddleware = require("@middleware/errorMiddleware");
 
-const app = express()
+const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
-app.use(routes)
+app.get("/health", (req, res) => {
+  res.send("ok");
+});
 
-app.use(errorMiddleware)
+app.use(routes);
 
-module.exports = app
+app.use(errorMiddleware);
+
+module.exports = app;

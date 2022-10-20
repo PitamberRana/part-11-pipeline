@@ -36,10 +36,8 @@
     "browser": true
   },
   "rules": {
-    "semi": [
-      "error",
-      "never"
-    ],
+    "semi": "off",
+    "quotes": "off",
     "max-len": [1, 200],
     "no-shadow": 0,
     "no-console": 0,
